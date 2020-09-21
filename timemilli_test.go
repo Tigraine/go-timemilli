@@ -28,3 +28,16 @@ func TestFromUnixMilli(t *testing.T) {
 		t.Errorf("Expected time to be '2018-11-21 14:27:26.506 +0000 UTC' got '%s'", ts.UTC().String())
 	}
 }
+
+func TestNowUnixMilli(t *testing.T) {
+	now := time.Now()
+	nownano := now.UnixNano()
+	// 1000 nanoseconds per microsecond
+	// 1000 microseconds per millisecond
+	// means 1000000 nanoseconds per millisecond:
+	nowmilli := nownano / 1000000
+	ts := FromUnixMilli(nowmilli)
+	if ts.UTC().String() != now.UTC().String() {
+		t.Errorf("Expected '%s' got '%s'", now.UTC().String(), ts.UTC().String())
+	}
+}
